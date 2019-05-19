@@ -1,7 +1,7 @@
 require 'pry'
 class Cult
 
-    attr_reader :name, :location, :founding_year, :slogan
+    attr_reader :name, :location, :founding_year, :slogan, :minimum_age
     #attr_accessor :followers
 
     @@all = []
@@ -9,8 +9,8 @@ class Cult
         @@all
     end
     
-    def initialize(name, location, founding_year, slogan)
-        @name, @location, @founding_year, @slogan = name, location, founding_year, slogan
+    def initialize(name, location, founding_year, slogan, minimum_age)
+        @name, @location, @founding_year, @slogan, @minimum_age = name, location, founding_year, slogan, minimum_age
         @@all << self
     end
 
@@ -25,6 +25,8 @@ class Cult
     def recruit_follower(follower, initiation_date)
         if followers.include?(follower)
             "Already recruited this follower."
+        elsif follower.age < @minimum_age
+            "Too young to join this cult."
         else
             BloodOath.new(self, follower, initiation_date)
         end

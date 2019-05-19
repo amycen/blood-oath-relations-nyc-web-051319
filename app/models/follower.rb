@@ -1,3 +1,4 @@
+require 'pry'
 class Follower
 
     attr_reader :name, :age, :life_motto
@@ -23,6 +24,8 @@ class Follower
     def join_cult(cult, initiation_date)
         if cults.include?(cult)
             "Already in this cult."
+        elsif @age < cult.minimum_age
+            "Too young to join this cult"
         else
             BloodOath.new(cult, self, initiation_date)
         end
@@ -31,6 +34,16 @@ class Follower
     def my_cults_slogans
         cults.map {|cult| cult.slogan}
     end
+
+    def fellow_cult_members
+        fellow_membs = []
+        cults.map do|cult| 
+            fellow_membs << cult.followers.map {|follower| follower.name}
+        end
+        fellow_membs.flatten.uniq
+    end
+
+        
 
     def self.top_ten
         tot_follower = Follower.all.count
